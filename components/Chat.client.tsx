@@ -3,7 +3,6 @@
 import React from 'react';
 import io from 'socket.io-client';
 
-
 const socket = io('http://localhost:4000');
 
 const HybridChatComponent = () => {
@@ -18,7 +17,7 @@ const HybridChatComponent = () => {
 
     // メッセージを受信したときの処理
     socket.on('message', (data: any) => {
-      setMessages((prevMessages: any[]) => [...prevMessages, data]);
+      setMessages((prevMessages: any[]) => [data, ...prevMessages]);
     });
 
     // コンポーネントのアンマウント時にイベントリスナーを解除
@@ -37,13 +36,28 @@ const HybridChatComponent = () => {
   };
 
   return (
-    <div>
-      <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
-      <button onClick={sendMessage}>送信</button>
-      <div>
-        {messages.map((msg, index) => (
-          <div key={index}>{msg}</div>
-        ))}
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="w-full max-w-md p-4 bg-white rounded shadow">
+        <div className="mb-2">
+          <input
+            className="w-full p-2 border rounded"
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="メッセージを入力"
+          />
+          <button
+            className="w-full p-2 mt-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+            onClick={sendMessage}
+          >
+            送信
+          </button>
+        </div>
+        <div className="h-64 overflow-y-auto">
+          {messages.map((msg, index) => (
+            <div key={index} className="p-2 border-b">{msg}</div>
+          ))}
+        </div>
       </div>
     </div>
   );
