@@ -7,7 +7,7 @@ const socket = io('http://localhost:4000');
 
 const HybridChatComponent = () => {
   const [message, setMessage] = React.useState('');
-  const [messages, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState<any[]>([]);
 
   React.useEffect(() => {
     // クライアントサイドでWebSocket接続
