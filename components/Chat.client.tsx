@@ -3,7 +3,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 
-const socket = io('https://next-chat-server-iota.vercel.app');
+const socket = io('http://next-chat-server-iota.vercel.app');
 
 const HybridChatComponent = () => {
   const [message, setMessage] = React.useState('');
