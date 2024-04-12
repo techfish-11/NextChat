@@ -9,7 +9,7 @@ app.use(cors()); // CORSミドルウェアを適用
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // クライアントのオリジンを許可
+    origin: "*", // どこからでも通信を許可
     methods: ["GET", "POST"] // 許可するHTTPメソッド
   }
 });
