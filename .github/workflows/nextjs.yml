@@ -76,4 +76,5 @@ jobs:
       - name: Start server.js
         run: |
           npm install -g pm2
+          cd ${{ github.workspace }}
           pm2 start server.js
