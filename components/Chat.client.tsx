@@ -3,7 +3,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 
-const socket = io('https://nextserver-drab.vercel.app/');
+const socket = io('https://iruka541.github.io/NextChat/');
 
 const HybridChatComponent = () => {
   const [message, setMessage] = React.useState('');
