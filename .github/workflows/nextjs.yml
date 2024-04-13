@@ -1,8 +1,11 @@
-name: Deploy Next.js site to Pages and start server
+name: Deploy Next.js site to Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
@@ -15,6 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
@@ -58,11 +62,14 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Start server
+        run: ${{ steps.detect-package-manager.outputs.runner }} node server.js
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
 
+  # Deployment job
   deploy:
     environment:
       name: github-pages
@@ -73,8 +80,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Start server.js
-        run: |
-          npm install -g pm2
-          cd ${{ github.workspace }}
-          pm2 start server.js
