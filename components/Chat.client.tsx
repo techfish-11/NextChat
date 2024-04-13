@@ -8,6 +8,7 @@ const socket = io('https://iruka541.github.io/NextChat/');
 const HybridChatComponent = () => {
   const [message, setMessage] = React.useState('');
   const [messages, setMessages] = React.useState<any[]>([]);
+  const [username, setUsername] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     // クライアントサイドでWebSocket接続
@@ -30,7 +31,7 @@ const HybridChatComponent = () => {
   // メッセージを送信する関数
   const sendMessage = () => {
     if (message.trim()) {
-      socket.emit('message', message);
+      socket.emit('message', { username: username || '匿名', message: message });
       setMessage('');
     }
   };
@@ -46,6 +47,13 @@ const HybridChatComponent = () => {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="メッセージを入力"
           />
+          <input
+            className="w-full p-2 border rounded mt-2"
+            type="text"
+            value={username || ''}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="ユーザー名を入力"
+          />
           <button
             className="w-full p-2 mt-2 text-white bg-blue-500 rounded hover:bg-blue-700"
             onClick={sendMessage}
@@ -55,7 +63,7 @@ const HybridChatComponent = () => {
         </div>
         <div className="h-64 overflow-y-auto">
           {messages.map((msg, index) => (
-            <div key={index} className="p-2 border-b">{msg}</div>
+            <div key={index} className="p-2 border-b">{msg.username}: {msg.message}</div>
           ))}
         </div>
       </div>
